@@ -388,6 +388,14 @@ body.previa .casilla.bloqueada { outline: 2px dashed color-mix(in srgb, var(--or
 .polaroid img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: #eee; }
 .polaroid.apaisada { width: min(340px, 100%); }
 .polaroid.apaisada img { aspect-ratio: 4 / 3; }
+/* recorte sin fondo: se ve entero sobre un fondo navideño */
+.polaroid.recorte img {
+  object-fit: contain; object-position: 50% 100%; padding-top: 6%;
+  background:
+    radial-gradient(circle, rgba(255,255,255,.55) 1.2px, transparent 1.8px) 0 0 / 18px 18px,
+    radial-gradient(circle, rgba(255,255,255,.35) 1px, transparent 1.6px) 9px 9px / 18px 18px,
+    radial-gradient(ellipse 80% 60% at 50% 35%, #2f7a58 0%, #163a2d 75%);
+}
 .polaroid .hueco {
   aspect-ratio: 4 / 5; display: grid; place-items: center; padding: 16px;
   background: repeating-linear-gradient(45deg, #f4ecdc 0 10px, #efe4cf 10px 20px);
@@ -570,6 +578,7 @@ footer { text-align: center; font-size: 12px; color: var(--crema-tenue); }
   //   texto:  "…"              (\n\n separa párrafos; líneas "1. …" se muestran como lista)
   //   foto:   "fotos/dia-04.jpg" (null = hueco pendiente de foto)   pie: "texto bajo la foto"
   //   apaisada: true             (para fotos horizontales: marco 4:3 en vez de 4:5)
+  //   recorte: true              (para PNG sin fondo: se ve entero sobre fondo navideño)
   //   vale:   { titulo: "…", detalle: "…" }
   //   enlace: { texto: "…", url: "https://…" }
   //   firma:  "…"               (despedida manuscrita al final)
@@ -603,7 +612,7 @@ footer { text-align: center; font-size: 12px; color: var(--crema-tenue); }
     },
     7: {
       titulo: "Navidades de antes",
-      foto: null, pie: "Mi Navidad de pequeño",
+      foto: "fotos/dia-07.png", recorte: true, pie: "Mi Navidad de pequeño",
       texto: "Hoy tienes un reto: mándame una foto tuya de pequeña en Navidad.\n\nYo ya he cumplido: aquí tienes la mía."
     },
     8: {
@@ -877,7 +886,7 @@ footer { text-align: center; font-size: 12px; color: var(--crema-tenue); }
     c.replaceChildren();
 
     if ("foto" in r) {
-      const fig = crear("figure", "polaroid" + (r.apaisada ? " apaisada" : ""));
+      const fig = crear("figure", "polaroid" + (r.apaisada ? " apaisada" : "") + (r.recorte ? " recorte" : ""));
       fig.style.setProperty("--giro", n % 2 ? "-2deg" : "2deg");
       if (r.foto) {
         const img = crear("img");
