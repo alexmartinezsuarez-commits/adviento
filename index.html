@@ -254,6 +254,77 @@ h1 em { color: var(--oro); font-style: italic; }
 .leyenda .l2 { background: var(--rojo); box-shadow: 0 0 8px 2px rgba(246,220,156,.75); }
 .leyenda .l3 { background: #170e08; box-shadow: inset 0 0 0 1px var(--oro); }
 
+/* ---------- Portada de bienvenida ---------- */
+body.con-portada { overflow: hidden; }
+body.con-portada #nieve { z-index: 55; }
+.portada {
+  position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; text-align: center; overflow: hidden;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: calc(24px + env(safe-area-inset-top, 0px)) calc(24px + env(safe-area-inset-bottom, 0px));
+  background:
+    radial-gradient(ellipse 90% 55% at 50% 38%, #1f4f3c 0%, transparent 70%),
+    radial-gradient(ellipse 120% 40% at 50% 110%, #12302a 0%, transparent 70%),
+    var(--noche);
+  transition: opacity .8s ease, visibility .8s;
+}
+.portada.fuera { opacity: 0; visibility: hidden; pointer-events: none; }
+.portada-contenido { position: relative; display: flex; flex-direction: column; align-items: center; gap: 14px; width: min(420px, 100%); }
+.portada-contenido > :not(.caja) { transition: opacity .45s ease, transform .45s ease; }
+.caja {
+  position: relative; width: min(250px, 64vw); max-width: 100%; margin-bottom: 4px;
+  border: 0; padding: 0; background: none; cursor: pointer; border-radius: 16px;
+  animation: flota 3.4s ease-in-out infinite;
+}
+.caja:focus-visible { outline: 3px solid var(--oro-claro); outline-offset: 8px; }
+.caja svg { display: block; width: 100%; height: auto; overflow: visible; }
+@keyframes flota { 0%, 100% { transform: translateY(0) rotate(-1.5deg); } 50% { transform: translateY(-10px) rotate(1.5deg); } }
+#tapa { transform-box: fill-box; transform-origin: 50% 100%; transition: transform .75s cubic-bezier(.3,.6,.2,1), opacity .55s ease; }
+#etiquetaRegalo { transform-box: fill-box; transform-origin: 0% 0%; animation: balanceo 2.8s ease-in-out infinite; transition: transform .6s ease, opacity .4s ease; }
+@keyframes balanceo { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(6deg); } }
+.destello {
+  position: absolute; left: 50%; top: 46%; width: 20px; height: 20px; margin: -10px 0 0 -10px; border-radius: 50%;
+  background: radial-gradient(circle, #fff8dc 0%, rgba(246,220,156,.85) 30%, rgba(228,185,94,0) 70%);
+  opacity: 0; transform: scale(0); pointer-events: none;
+}
+.chispa {
+  position: absolute; left: 50%; top: 40%; width: 7px; height: 7px; margin: -3px; border-radius: 50%;
+  background: var(--c, var(--oro-claro)); box-shadow: 0 0 8px 2px var(--c, var(--oro-claro));
+  opacity: 0; pointer-events: none;
+}
+.portada.abriendo .caja { animation: sacudida .5s ease-in-out; }
+@keyframes sacudida { 0%,100% { transform: rotate(0); } 20% { transform: rotate(-7deg) scale(1.03); } 40% { transform: rotate(6deg) scale(1.05); } 60% { transform: rotate(-4deg); } 80% { transform: rotate(3deg); } }
+.portada.abriendo #tapa { transform: translateY(-170%) rotate(-32deg); opacity: 0; transition-delay: .45s; }
+.portada.abriendo #etiquetaRegalo { animation: none; transform: translate(30%, 60%) rotate(70deg); opacity: 0; transition-delay: .35s; }
+.portada.abriendo .destello { animation: destelloAbre 1.2s .65s ease-out forwards; }
+.portada.abriendo .chispa { animation: chispaVuela 1s calc(.6s + var(--r) * .2s) cubic-bezier(.2,.7,.3,1) forwards; }
+@keyframes destelloAbre { 0% { opacity: 0; transform: scale(0); } 25% { opacity: 1; } 100% { opacity: 0; transform: scale(70); } }
+@keyframes chispaVuela { 0% { opacity: 1; transform: translate(0, 0) scale(1); } 100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(.3); } }
+.portada.abriendo .portada-contenido > :not(.caja) { opacity: 0; transform: translateY(12px); }
+.portada-titulo {
+  margin: 0; font-family: var(--f-display); font-weight: 400; color: var(--crema);
+  font-size: clamp(34px, 9vw, 54px); line-height: 1.05; text-wrap: balance;
+}
+.portada-titulo em { color: var(--oro); font-style: italic; }
+.portada-sub { margin: 0; color: var(--crema-tenue); font-size: 15px; text-wrap: balance; }
+.portada-btn {
+  margin-top: 6px; border: 0; cursor: pointer;
+  padding: 14px 32px; border-radius: 999px; font: inherit; font-size: 16px; font-weight: 800; letter-spacing: .02em;
+  background: var(--oro); color: var(--rojo-osc);
+  box-shadow: 0 10px 30px rgba(228,185,94,.35), inset 0 -3px 0 rgba(0,0,0,.12);
+}
+.portada-btn:hover { background: var(--oro-claro); }
+.portada-btn:focus-visible { outline: 3px solid var(--crema); outline-offset: 3px; }
+
+/* entrada del calendario tras la portada */
+.calendario.entrada .casilla { animation: entraPuerta .6s cubic-bezier(.2,.8,.2,1.15) both; animation-delay: calc(var(--i) * 40ms); }
+@keyframes entraPuerta { from { opacity: 0; transform: translateY(22px) scale(.92); } to { opacity: 1; transform: none; } }
+header.entrada > * { animation: entraCabecera .7s ease both; }
+header.entrada > :nth-child(2) { animation-delay: .08s; }
+header.entrada > :nth-child(3) { animation-delay: .16s; }
+header.entrada > :nth-child(4) { animation-delay: .24s; }
+@keyframes entraCabecera { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
+
 /* ---------- Vista previa (solo la dueña) ---------- */
 .previa-btn {
   position: fixed; z-index: 25;
@@ -371,10 +442,72 @@ footer { text-align: center; font-size: 12px; color: var(--crema-tenue); }
 @media (prefers-reduced-motion: reduce) {
   .puerta { transition: none; }
   .casilla.disponible .puerta, .casilla.sacude, .regalo, .bombilla, .brillos i { animation: none; }
+  .caja, #etiquetaRegalo, .portada.abriendo .caja, .calendario.entrada .casilla, header.entrada > * { animation: none; }
+  .portada.abriendo #tapa, .portada.abriendo #etiquetaRegalo { transition: none; }
+  .portada.abriendo .destello, .portada.abriendo .chispa { animation: none; }
 }
 </style>
 
 <canvas id="nieve" aria-hidden="true"></canvas>
+
+<div class="portada" id="portada" role="dialog" aria-modal="true" aria-labelledby="portadaTitulo">
+  <div class="portada-contenido">
+    <div class="eyebrow">Adviento 2026</div>
+    <button class="caja" id="portadaCaja" type="button" aria-label="Abrir el regalo">
+      <svg viewBox="0 0 220 230" aria-hidden="true">
+        <ellipse cx="110" cy="214" rx="78" ry="9" fill="rgba(0,0,0,.35)"/>
+        <g id="cuerpo">
+          <rect x="34" y="104" width="152" height="104" rx="7" fill="#b3262d"/>
+          <rect x="34" y="104" width="152" height="104" rx="7" fill="url(#lunares)"/>
+          <rect x="34" y="104" width="152" height="14" fill="#000" opacity=".16"/>
+          <rect x="99" y="104" width="22" height="104" fill="#e4b95e"/>
+          <rect x="99" y="104" width="6" height="104" fill="#f6dc9c" opacity=".7"/>
+        </g>
+        <g class="tapa-grupo">
+          <g id="tapa">
+            <rect x="24" y="76" width="172" height="34" rx="7" fill="#c8343b"/>
+            <rect x="24" y="76" width="172" height="34" rx="7" fill="url(#lunares)"/>
+            <rect x="97" y="76" width="26" height="34" fill="#e4b95e"/>
+            <rect x="97" y="76" width="7" height="34" fill="#f6dc9c" opacity=".7"/>
+            <path d="M110 76 C 84 36, 46 40, 62 70 C 70 82, 94 82, 110 76 Z" fill="#e4b95e"/>
+            <path d="M110 76 C 136 36, 174 40, 158 70 C 150 82, 126 82, 110 76 Z" fill="#e4b95e"/>
+            <path d="M110 76 C 92 50, 70 52, 74 66 C 78 74, 96 76, 110 76 Z" fill="#c99a3e"/>
+            <path d="M110 76 C 128 50, 150 52, 146 66 C 142 74, 124 76, 110 76 Z" fill="#c99a3e"/>
+            <ellipse cx="110" cy="74" rx="12" ry="10" fill="#d9a845"/>
+            <ellipse cx="106" cy="71" rx="4" ry="3" fill="#f6dc9c" opacity=".8"/>
+          </g>
+        </g>
+        <g id="etiquetaRegalo">
+          <path d="M146 90 C 152 108, 151 128, 149 144" stroke="#e4b95e" stroke-width="2" fill="none"/>
+          <g transform="translate(140 122) rotate(14)">
+            <path d="M16 0 H 102 a6 6 0 0 1 6 6 V 34 a6 6 0 0 1 -6 6 H 16 L 0 20 Z" fill="#f7eedd"/>
+            <path d="M18 4 H 100 a3 3 0 0 1 3 3 V 33 a3 3 0 0 1 -3 3 H 18 L 5 20 Z" fill="none" stroke="#c99a3e" stroke-width="1.2" stroke-dasharray="3 3"/>
+            <circle cx="14" cy="20" r="3.2" fill="#0d231d"/>
+            <text x="63" y="27" text-anchor="middle" font-family="Caveat, 'Segoe Print', cursive" font-weight="700" font-size="19" fill="#7a161b">Para Olgui</text>
+          </g>
+        </g>
+        <defs>
+          <pattern id="lunares" width="16" height="16" patternUnits="userSpaceOnUse">
+            <circle cx="4" cy="4" r="2" fill="#fff" opacity=".13"/>
+            <circle cx="12" cy="12" r="2" fill="#fff" opacity=".13"/>
+          </pattern>
+        </defs>
+      </svg>
+      <span class="destello"></span>
+      <span class="chispa" style="--x:-120px;--y:-140px;--r:0"></span>
+      <span class="chispa" style="--x:130px;--y:-120px;--r:1;--c:#ff9f43"></span>
+      <span class="chispa" style="--x:-160px;--y:-30px;--r:2;--c:#5ad1a0"></span>
+      <span class="chispa" style="--x:150px;--y:-20px;--r:1;--c:#ff5a5f"></span>
+      <span class="chispa" style="--x:-60px;--y:-190px;--r:2;--c:#6fb7ff"></span>
+      <span class="chispa" style="--x:70px;--y:-200px;--r:0"></span>
+      <span class="chispa" style="--x:-110px;--y:60px;--r:1;--c:#ff5a5f"></span>
+      <span class="chispa" style="--x:110px;--y:70px;--r:2;--c:#5ad1a0"></span>
+    </button>
+    <h2 class="portada-titulo" id="portadaTitulo">Tu calendario de <em>Adviento</em></h2>
+    <p class="portada-sub" id="portadaSub">24 puertas, una cada día hasta Nochebuena</p>
+    <button class="portada-btn" id="portadaBtn" type="button">Abrir mi regalo</button>
+  </div>
+</div>
 
 <div class="pagina">
   <header>
@@ -658,6 +791,7 @@ footer { text-align: center; font-size: 12px; color: var(--crema-tenue); }
     b.type = "button";
     b.id = `puerta-${n}`;
     b.style.gridArea = `d${n}`;
+    b.style.setProperty("--i", n - 1); // orden de entrada tras la portada: del 1 al 24
     b.className = `casilla c-${color} p-${patron}` + (n === 14 || n === 24 ? ` especial-${n}` : "");
     const brillos = (n === 14 || n === 24)
       ? `<span class="brillos">${[[18,22,0],[78,18,.8],[70,78,1.6],[24,72,2.2]].map(([x,y,d]) => `<i style="left:${x}%;top:${y}%;animation-delay:${d}s"></i>`).join("")}</span>` : "";
@@ -825,6 +959,7 @@ footer { text-align: center; font-size: 12px; color: var(--crema-tenue); }
     for (let n = 1; n <= DIAS; n++) if (t < aperturaDe(n)) { siguiente = n; break; }
     const txt = document.getElementById("cuentaTexto");
     const reloj = document.getElementById("cuentaReloj");
+    pintarPortada(t, siguiente);
     if (siguiente === null) {
       txt.textContent = "Todas las puertas están abiertas. ¡Feliz Navidad!";
       reloj.textContent = "";
@@ -833,6 +968,44 @@ footer { text-align: center; font-size: 12px; color: var(--crema-tenue); }
       reloj.textContent = restante(aperturaDe(siguiente) - t);
     }
   }
+
+  // ================= PORTADA DE BIENVENIDA =================
+  const portada = document.getElementById("portada");
+  const portadaSub = document.getElementById("portadaSub");
+  document.body.classList.add("con-portada");
+  function pintarPortada(t, siguiente) {
+    if (portada.hidden) return;
+    let txt;
+    if (siguiente === 1) {
+      const dias = Math.ceil((aperturaDe(1) - t) / 86400000);
+      txt = dias <= 1 ? "La primera puerta se abre esta medianoche" : `Faltan ${dias} días para la primera puerta`;
+    } else if (siguiente === null) {
+      txt = "Todas las puertas están abiertas. ¡Feliz Navidad!";
+    } else {
+      const hoy = siguiente - 1;
+      txt = abiertas.has(hoy) ? `Hoy ya has abierto la puerta ${hoy}` : `Hoy te espera la puerta ${hoy}`;
+    }
+    if (portadaSub.textContent !== txt) portadaSub.textContent = txt;
+  }
+  function abrirPortada() {
+    if (portada.classList.contains("abriendo")) return;
+    portada.classList.add("abriendo");
+    const reducir = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setTimeout(() => {
+      portada.classList.add("fuera");
+      document.body.classList.remove("con-portada");
+      calendario.classList.add("entrada");
+      document.querySelector("header").classList.add("entrada");
+      setTimeout(() => {
+        portada.hidden = true;
+        calendario.classList.remove("entrada");
+        document.querySelector("header").classList.remove("entrada");
+      }, 1800);
+    }, reducir ? 0 : 1500);
+  }
+  document.getElementById("portadaCaja").addEventListener("click", abrirPortada);
+  document.getElementById("portadaBtn").addEventListener("click", abrirPortada);
+  try { document.getElementById("portadaBtn").focus({ preventScroll: true }); } catch (e) {}
 
   // ================= VISTA PREVIA (solo la dueña del calendario) =================
   // El botón solo aparece si quien abre la página es la persona que la creó.
