@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calendario de Adviento 2026</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0d231d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Adviento">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+html { background: #0d231d; color-scheme: dark; }
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { font: 14px/1.5 system-ui, sans-serif; }
+img { max-width: 100%; }
+</style>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Nunito+Sans:wght@400;600;800&family=Caveat:wght@500;700&display=swap">
+<style>
+/* Layout: guirnalda de luces + título, y debajo un "mosaico" de 24 puertas de distintos tamaños
+   (rejilla con áreas fijas: 6 columnas en escritorio, 4 en móvil). Diseño de un solo tema, nocturno. */
+:root {
+  color-scheme: dark;
+  --noche: #0d231d;
+  --pino: #163a2d;
+  --pino-claro: #21573f;
+  --rojo: #b3262d;
+  --rojo-osc: #7a161b;
+  --oro: #e4b95e;
+  --oro-claro: #f6dc9c;
+  --crema: #f7eedd;
+  --crema-carton: #ecdfc3;
+  --crema-tenue: #c9c0ad;
+  --plata: #dde6ee;
+  --plata-osc: #8fa6ba;
+  --azul-tinta: #1f3550;
+  --sombra: rgba(0, 0, 0, .45);
+  --f-display: "DM Serif Display", Georgia, "Times New Roman", serif;
+  --f-texto: "Nunito Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  background: var(--noche);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -5%, var(--pino-claro) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 40% at 50% 110%, #12302a 0%, transparent 70%);
+  color: var(--crema);
+  font-family: var(--f-texto);
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+#nieve { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+
+.pagina {
+  position: relative; z-index: 1;
+  max-width: 1120px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 18px 48px;
+  display: flex; flex-direction: column; gap: 26px;
+}
+
+/* ---------- Cabecera ---------- */
+header { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.luces { position: relative; width: min(620px, 100%); height: 46px; }
+.luces svg.cable { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.bombilla {
+  position: absolute; width: 10px; height: 15px; margin-left: -5px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: var(--c); box-shadow: 0 0 10px 2px var(--c);
+  animation: parpadeo 2.8s ease-in-out infinite; animation-delay: var(--d);
+}
+.bombilla::before { content: ""; position: absolute; top: -4px; left: 2px; width: 6px; height: 5px; border-radius: 1px; background: #5b5140; }
+@keyframes parpadeo { 0%, 100% { opacity: 1; } 50% { opacity: .35; box-shadow: 0 0 2px 0 var(--c); } }
+
+.eyebrow { font-size: 12px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: var(--oro); }
+h1 {
+  margin: 0; font-family: var(--f-display); font-weight: 400;
+  font-size: clamp(38px, 8vw, 72px); line-height: 1; text-wrap: balance;
+  text-shadow: 0 4px 24px rgba(0,0,0,.35);
+}
+h1 em { color: var(--oro); font-style: italic; }
+.cuenta {
+  margin-top: 8px;
+  display: inline-flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 4px 12px;
+  padding: 10px 20px; border-radius: 999px;
+  background: color-mix(in srgb, var(--pino) 85%, transparent);
+  border: 1px solid color-mix(in srgb, var(--oro) 35%, transparent);
+}
+.cuenta .que { color: var(--crema-tenue); font-size: 14px; }
+.cuenta .reloj { font-weight: 800; font-variant-numeric: tabular-nums; color: var(--oro-claro); font-size: 18px; }
+
+/* ---------- Mosaico de puertas ---------- */
+.calendario {
+  display: grid; gap: 10px; padding: 12px; border-radius: 22px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: clamp(88px, 25vw, 140px);
+  grid-template-areas:
+    "d14 d14 d7  d2"
+    "d14 d14 d7  d19"
+    "d11 d9  d9  d3"
+    "d16 d24 d24 d3"
+    "d16 d24 d24 d5"
+    "d20 d1  d12 d12"
+    "d8  d1  d17 d4"
+    "d13 d13 d17 d21"
+    "d10 d18 d23 d23"
+    "d10 d6  d15 d22";
+  background:
+    repeating-linear-gradient(45deg, transparent 0 14px, rgba(255,255,255,.022) 14px 28px),
+    var(--pino);
+  box-shadow: 0 24px 60px var(--sombra), inset 0 0 0 2px color-mix(in srgb, var(--oro) 45%, transparent),
+              inset 0 0 0 7px var(--pino), inset 0 0 0 8px color-mix(in srgb, var(--oro) 20%, transparent);
+}
+@media (min-width: 720px) {
+  .calendario {
+    gap: 14px; padding: 22px;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-auto-rows: clamp(118px, 13vw, 158px);
+    grid-template-areas:
+      "d14 d14 d7  d2  d19 d19"
+      "d14 d14 d7  d11 d3  d22"
+      "d16 d9  d9  d5  d3  d20"
+      "d16 d1  d24 d24 d12 d12"
+      "d8  d1  d24 d24 d17 d4"
+      "d21 d13 d13 d18 d17 d10"
+      "d6  d6  d23 d23 d15 d10";
+  }
+}
+
+.casilla {
+  position: relative; min-width: 0; min-height: 0;
+  perspective: 1100px; container-type: size;
+  border: 0; padding: 0; margin: 0; background: none; color: inherit; font: inherit;
+  cursor: pointer; border-radius: 12px;
+}
+.casilla:focus-visible { outline: 3px solid var(--oro-claro); outline-offset: 3px; }
+
+/* hueco interior */
+.interior {
+  position: absolute; inset: 0; border-radius: 12px;
+  background: radial-gradient(circle at 50% 45%, #3a2416 0%, #170e08 78%);
+  box-shadow: inset 0 5px 16px rgba(0,0,0,.75);
+  display: grid; place-items: center;
+}
+.interior svg { width: 52cqmin; height: auto; filter: drop-shadow(0 4px 6px rgba(0,0,0,.5)); transition: transform .3s; }
+.casilla.abierta:hover .interior svg { transform: scale(1.07) rotate(-3deg); }
+
+/* puerta */
+.puerta {
+  --fondo: var(--rojo); --tinta: var(--crema); --marco: var(--oro); --dibujo: rgba(255,255,255,.1);
+  position: absolute; inset: 0; border-radius: 12px; overflow: hidden;
+  transform-origin: left center; backface-visibility: hidden;
+  transition: transform .95s cubic-bezier(.2,.7,.2,1), filter .3s;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4cqmin;
+  color: var(--tinta);
+  background-color: var(--fondo);
+  box-shadow: 0 8px 18px var(--sombra),
+              inset 0 0 0 2px var(--marco),
+              inset 0 0 0 6px var(--fondo),
+              inset 0 0 0 7px color-mix(in srgb, var(--marco) 40%, transparent);
+}
+/* brillo de cartón */
+.puerta::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(circle at 25% 15%, rgba(255,255,255,.16), transparent 50%),
+              linear-gradient(160deg, transparent 55%, rgba(0,0,0,.2));
+}
+/* tirador */
+.puerta::before {
+  content: ""; position: absolute; right: 9px; top: 50%; width: 5px; height: 16px; margin-top: -8px;
+  border-radius: 3px; background: var(--marco); opacity: .75; box-shadow: 0 1px 2px rgba(0,0,0,.4);
+}
+
+/* colores */
+.c-verde .puerta { --fondo: var(--pino-claro); }
+.c-crema .puerta { --fondo: var(--crema-carton); --tinta: var(--rojo-osc); --dibujo: rgba(179,38,45,.12); --marco: #c99a3e; }
+.c-granate .puerta { --fondo: var(--rojo-osc); }
+
+/* estampados */
+.p-puntos .puerta { background-image: radial-gradient(circle, var(--dibujo) 2px, transparent 2.6px); background-size: 16px 16px; }
+.p-rayas .puerta { background-image: repeating-linear-gradient(135deg, var(--dibujo) 0 9px, transparent 9px 18px); }
+.p-cuadros .puerta {
+  background-image:
+    repeating-linear-gradient(0deg, var(--dibujo) 0 6px, transparent 6px 22px),
+    repeating-linear-gradient(90deg, var(--dibujo) 0 6px, transparent 6px 22px);
+}
+
+/* especiales */
+.especial-24 .puerta {
+  --fondo: #d9a845; --tinta: var(--rojo-osc); --marco: #fff1c4; --dibujo: rgba(255,255,255,.18);
+  background-image:
+    radial-gradient(circle at 30% 20%, rgba(255,248,220,.75), transparent 45%),
+    linear-gradient(135deg, #f4d488 0%, #c8923a 55%, #e8c172 100%);
+}
+.especial-14 .puerta {
+  --fondo: var(--plata); --tinta: var(--azul-tinta); --marco: #ffffff; --dibujo: rgba(255,255,255,.4);
+  background-image:
+    radial-gradient(circle at 70% 25%, rgba(255,255,255,.9), transparent 40%),
+    linear-gradient(140deg, #f3f7fa 0%, #b9cad8 50%, #e6eef4 100%);
+}
+.especial-14 .puerta, .especial-24 .puerta { box-shadow: 0 10px 26px var(--sombra), inset 0 0 0 3px var(--marco), inset 0 0 0 8px transparent, inset 0 0 0 9px color-mix(in srgb, var(--tinta) 25%, transparent); }
+.especial-14 .brillos, .especial-24 .brillos { display: block; }
+.brillos { display: none; position: absolute; inset: 0; pointer-events: none; }
+.brillos i {
+  position: absolute; width: 6px; height: 6px; background: #fff; border-radius: 50%;
+  box-shadow: 0 0 8px 2px rgba(255,255,255,.9); animation: destello 3s ease-in-out infinite;
+}
+@keyframes destello { 0%, 100% { opacity: 0; transform: scale(.4); } 50% { opacity: 1; transform: scale(1); } }
+
+.adorno { width: 22cqmin; height: 22cqmin; opacity: .85; position: relative; z-index: 1; }
+.num {
+  position: relative; z-index: 1;
+  font-family: var(--f-display); font-size: 40cqmin; line-height: .9;
+  text-shadow: 0 2px 0 rgba(0,0,0,.18);
+}
+.especial-14 .num, .especial-24 .num { text-shadow: 0 1px 0 rgba(255,255,255,.6); }
+.etiqueta {
+  position: relative; z-index: 1; min-height: 14px;
+  font-size: clamp(9px, 9cqmin, 12px); font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
+  display: inline-flex; align-items: center;
+}
+.candado { width: 13px; height: 13px; opacity: .65; }
+
+/* estados */
+.casilla.bloqueada .puerta { filter: saturate(.8) brightness(.9); }
+.casilla.bloqueada:hover .puerta { filter: saturate(.9) brightness(.97); }
+.casilla.disponible .puerta { animation: brillo 2.4s ease-in-out infinite; }
+@keyframes brillo {
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(246,220,156,0)); }
+  50% { filter: drop-shadow(0 0 14px rgba(246,220,156,.85)); }
+}
+.casilla.disponible:hover .puerta { transform: rotateY(-16deg); }
+.casilla.abierta .puerta { transform: rotateY(-106deg); }
+.casilla.sacude { animation: sacude .45s; }
+@keyframes sacude { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-5px) rotate(-1deg); } 40% { transform: translateX(5px) rotate(1deg); } 60% { transform: translateX(-3px); } 80% { transform: translateX(3px); } }
+
+.leyenda { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 22px; font-size: 13px; color: var(--crema-tenue); }
+.leyenda span { display: inline-flex; align-items: center; gap: 8px; }
+.leyenda i { width: 14px; height: 18px; border-radius: 3px; display: inline-block; }
+.leyenda .l1 { background: var(--rojo); filter: saturate(.8) brightness(.9); }
+.leyenda .l2 { background: var(--rojo); box-shadow: 0 0 8px 2px rgba(246,220,156,.75); }
+.leyenda .l3 { background: #170e08; box-shadow: inset 0 0 0 1px var(--oro); }
+
+/* ---------- Vista previa (solo la dueña) ---------- */
+.previa-btn {
+  position: fixed; z-index: 25;
+  right: calc(16px + env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 16px; border-radius: 999px; cursor: pointer;
+  font: inherit; font-size: 13px; font-weight: 800;
+  background: var(--pino); color: var(--crema);
+  border: 1px solid color-mix(in srgb, var(--oro) 55%, transparent);
+  box-shadow: 0 8px 24px var(--sombra);
+}
+.previa-btn svg { width: 18px; height: 18px; }
+.previa-btn[aria-pressed="true"] { background: var(--oro); color: var(--rojo-osc); border-color: var(--oro-claro); }
+.previa-btn:focus-visible { outline: 3px solid var(--oro-claro); outline-offset: 3px; }
+body.previa .casilla.bloqueada .puerta { filter: none; }
+body.previa .casilla.bloqueada { outline: 2px dashed color-mix(in srgb, var(--oro-claro) 70%, transparent); outline-offset: 3px; }
+
+/* ---------- Aviso ---------- */
+.aviso {
+  position: fixed; left: 50%; bottom: calc(76px + env(safe-area-inset-bottom, 0px)); z-index: 30;
+  transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+  max-width: calc(100% - 32px); width: max-content;
+  padding: 12px 18px; border-radius: 12px; text-align: center;
+  background: var(--crema); color: var(--rojo-osc); font-weight: 700; font-size: 14px;
+  box-shadow: 0 10px 30px var(--sombra); transition: opacity .25s, transform .25s;
+}
+.aviso.ver { opacity: 1; transform: translate(-50%, 0); }
+
+/* ---------- Ventana del regalo ---------- */
+.velo {
+  position: fixed; inset: 0; z-index: 40; display: grid;
+  grid-template-columns: minmax(0, 480px); justify-content: center; align-items: center;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 24px;
+  background: rgba(5, 15, 12, .74); backdrop-filter: blur(4px);
+}
+.regalo {
+  position: relative; width: 100%; min-width: 0; max-height: calc(100dvh - 48px); overflow: auto;
+  background: var(--crema); color: #3a1a14; border-radius: 20px;
+  padding: 32px 26px 26px; text-align: center;
+  box-shadow: 0 30px 80px rgba(0,0,0,.6), inset 0 0 0 3px var(--oro), inset 0 0 0 8px var(--crema), inset 0 0 0 9px color-mix(in srgb, var(--rojo) 40%, transparent);
+  animation: aparece .45s cubic-bezier(.2,.8,.2,1.2);
+}
+@keyframes aparece { from { transform: scale(.85) translateY(20px); opacity: 0; } to { transform: none; opacity: 1; } }
+.regalo .dia { font-size: 12px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--rojo); }
+.regalo h2 { margin: 6px 0 12px; font-family: var(--f-display); font-weight: 400; font-size: 36px; line-height: 1.1; color: var(--rojo-osc); text-wrap: balance; }
+.contenido { display: flex; flex-direction: column; align-items: center; gap: 18px; color: #5b3b30; }
+.texto { max-width: 38ch; }
+.texto p { margin: 0 0 10px; }
+.texto p:last-child { margin-bottom: 0; }
+.texto ol { margin: 0; padding-left: 1.4em; text-align: left; display: flex; flex-direction: column; gap: 6px; }
+.texto ol li::marker { color: var(--rojo); font-weight: 800; }
+
+.polaroid {
+  margin: 4px 0 0; width: min(290px, 100%);
+  background: #fff; padding: 10px 10px 8px; border-radius: 3px;
+  box-shadow: 0 10px 24px rgba(58, 26, 20, .25), 0 1px 3px rgba(58, 26, 20, .2);
+  transform: rotate(var(--giro, -2deg));
+}
+.polaroid img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: #eee; }
+.polaroid.apaisada { width: min(340px, 100%); }
+.polaroid.apaisada img { aspect-ratio: 4 / 3; }
+.polaroid .hueco {
+  aspect-ratio: 4 / 5; display: grid; place-items: center; padding: 16px;
+  background: repeating-linear-gradient(45deg, #f4ecdc 0 10px, #efe4cf 10px 20px);
+  color: #8a6b5a; font-size: 13px; font-weight: 600;
+}
+.polaroid figcaption { font-family: "Caveat", "Segoe Print", cursive; font-size: 23px; line-height: 1.2; color: #3a1a14; padding: 8px 4px 2px; }
+
+.vale {
+  position: relative; width: 100%; padding: 18px 22px 14px; border-radius: 12px;
+  background: #fff8ea; border: 2px dashed color-mix(in srgb, var(--rojo) 70%, transparent);
+}
+.vale::before, .vale::after {
+  content: ""; position: absolute; top: 50%; width: 22px; height: 22px; margin-top: -11px; border-radius: 50%;
+  background: var(--crema);
+}
+.vale::before { left: -13px; }
+.vale::after { right: -13px; }
+.vale .por { font-size: 11px; font-weight: 800; letter-spacing: .22em; text-transform: uppercase; color: var(--rojo); }
+.vale h3 { margin: 4px 0 6px; font-family: var(--f-display); font-weight: 400; font-size: 25px; line-height: 1.15; color: var(--rojo-osc); text-wrap: balance; }
+.vale p { margin: 0; font-size: 14px; }
+.vale .serie {
+  margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(179, 38, 45, .2);
+  font-size: 10px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: #9b7a6b;
+  display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+}
+
+.enlace {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 11px 22px; border-radius: 999px; text-decoration: none; font-weight: 800;
+  background: var(--pino-claro); color: var(--crema);
+  box-shadow: 0 6px 16px rgba(22, 58, 45, .3);
+}
+.enlace:hover { background: var(--pino); }
+.enlace:focus-visible { outline: 3px solid var(--oro); outline-offset: 2px; }
+.enlace svg { width: 18px; height: 18px; }
+.firma { font-family: "Caveat", "Segoe Print", cursive; font-size: 26px; color: var(--rojo); }
+.regalo .lazo { width: 96px; margin: 0 auto 6px; display: block; }
+.regalo .cerrar {
+  margin-top: 22px; border: 0; cursor: pointer;
+  padding: 11px 28px; border-radius: 999px; font: inherit; font-weight: 800;
+  background: var(--rojo); color: var(--crema);
+}
+.regalo .cerrar:hover { background: var(--rojo-osc); }
+.regalo .cerrar:focus-visible, .regalo .x:focus-visible { outline: 3px solid var(--oro); outline-offset: 2px; }
+.regalo .x {
+  position: absolute; top: 12px; right: 12px; width: 34px; height: 34px; border-radius: 50%;
+  border: 0; background: transparent; color: var(--rojo-osc); font-size: 22px; cursor: pointer; line-height: 1;
+}
+
+footer { text-align: center; font-size: 12px; color: var(--crema-tenue); }
+
+@media (prefers-reduced-motion: reduce) {
+  .puerta { transition: none; }
+  .casilla.disponible .puerta, .casilla.sacude, .regalo, .bombilla, .brillos i { animation: none; }
+}
+</style>
+
+<canvas id="nieve" aria-hidden="true"></canvas>
+
+<div class="pagina">
+  <header>
+    <div class="luces" id="luces" aria-hidden="true">
+      <svg class="cable" viewBox="0 0 100 46" preserveAspectRatio="none"><path d="M0 6 Q50 46 100 6" fill="none" stroke="#3d4a3a" stroke-width="1.2" vector-effect="non-scaling-stroke"/></svg>
+    </div>
+    <div class="eyebrow">Del 1 al 24 de diciembre</div>
+    <h1>Calendario de <em>Adviento</em></h1>
+    <div class="cuenta" aria-live="polite">
+      <span class="que" id="cuentaTexto">Calculando…</span>
+      <span class="reloj" id="cuentaReloj"></span>
+    </div>
+  </header>
+
+  <main>
+    <div class="calendario" id="calendario" aria-label="Puertas del calendario"></div>
+  </main>
+
+  <div class="leyenda">
+    <span><i class="l1"></i>Aún cerrada</span>
+    <span><i class="l2"></i>Lista para abrir</span>
+    <span><i class="l3"></i>Ya abierta (puedes volver a verla)</span>
+  </div>
+
+  <footer>Cada puerta se abre a las 0:00 (hora de España) de su día.</footer>
+</div>
+
+<div class="aviso" id="aviso" role="status"></div>
+
+<button class="previa-btn" id="previaBtn" type="button" aria-pressed="false" hidden>
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 5C6.5 5 2.7 9.4 1.5 12c1.2 2.6 5 7 10.5 7s9.3-4.4 10.5-7C21.3 9.4 17.5 5 12 5Zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-2.2a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6Z"/></svg>
+  <span id="previaTxt">Vista previa</span>
+</button>
+
+<div class="velo" id="velo" hidden>
+  <div class="regalo" role="dialog" aria-modal="true" aria-labelledby="regaloTitulo">
+    <button class="x" id="regaloX" aria-label="Cerrar">×</button>
+    <svg class="lazo" viewBox="0 0 100 60" aria-hidden="true">
+      <path d="M50 30 C30 0, 5 10, 15 30 C5 50, 30 55, 50 30Z" fill="#b3262d"/>
+      <path d="M50 30 C70 0, 95 10, 85 30 C95 50, 70 55, 50 30Z" fill="#b3262d"/>
+      <circle cx="50" cy="30" r="8" fill="#7a161b"/>
+    </svg>
+    <div class="dia" id="regaloDia"></div>
+    <h2 id="regaloTitulo"></h2>
+    <div class="contenido" id="regaloContenido"></div>
+    <button class="cerrar" id="regaloCerrar">Cerrar</button>
+  </div>
+</div>
+
+<script>
+(() => {
+  // ================= CONFIGURACIÓN =================
+  const ANIO = 2026;
+  const DIAS = 24;
+  const DESFASE_HORAS = 1; // diciembre en España = UTC+1
+
+  // ================= CONTENIDO DE CADA DÍA =================
+  // Campos posibles (todos opcionales salvo el título):
+  //   titulo: "…"
+  //   texto:  "…"              (\n\n separa párrafos; líneas "1. …" se muestran como lista)
+  //   foto:   "fotos/dia-04.jpg" (null = hueco pendiente de foto)   pie: "texto bajo la foto"
+  //   apaisada: true             (para fotos horizontales: marco 4:3 en vez de 4:5)
+  //   vale:   { titulo: "…", detalle: "…" }
+  //   enlace: { texto: "…", url: "https://…" }
+  //   firma:  "…"               (despedida manuscrita al final)
+  const spotify = (q) => "https://open.spotify.com/search/" + encodeURIComponent(q);
+  const REGALOS = {
+    1: {
+      titulo: "Empieza la cuenta atrás",
+      texto: "Hola, Olgui. Hoy abres la primera puerta de este calendario, así que hoy te toca la presentación: está hecho para que este diciembre tengas una ilusión nueva cada mañana.\n\nCada día te espera algo distinto: una carta, un recuerdo, un vale… Solo se puede abrir una puerta al día, y no me puedes hacer lo mismo que con el calendario de chocolate, así que nada de trampas.\n\nEspero que lo disfrutes mucho: está hecho con mucho cariño para una chica nostálgica."
+    },
+    2: {
+      titulo: "Recuerdos en papel",
+      vale: { titulo: "5 fotos a elegir", detalle: "Elige las cinco fotos nuestras que más te gusten y te las imprimo para que las tengas siempre a mano." }
+    },
+    3: {
+      titulo: "La banda sonora de diciembre",
+      texto: "Si hay una canción que tiene que sonar este mes, es esta.\n\n¡LEVANTA ESE ESPÍRITU NAVIDEÑO, VAMOS QUE NOS VAMOS!!!!",
+      enlace: { texto: "Escuchar en Spotify", url: "https://open.spotify.com/track/0bYg9bo50gSsH3LtXe2SQn" }
+    },
+    4: {
+      titulo: "La primera de muchas",
+      foto: "fotos/dia-04.jpg", pie: "Ya van más de 1000",
+      texto: "Casi nunca quiero fotos, pero, muy tímido, te lo pedí sin saber cómo te iba a parecer. Ya me transmitías algo y me apetecía tener un recuerdo contigo, aunque fuese algo tan simple como una foto en el sofá."
+    },
+    5: {
+      titulo: "Tres cosas por las que sé que eras tú",
+      texto: "1. Lo cariñosa que eres conmigo, aunque me ría de ti, cuando con nadie más te sale serlo.\n2. La ilusión con la que compartes tu vida conmigo.\n3. Lo mucho que te quieren mis amigos, que también saben que eres lo mejor para mí."
+    },
+    6: {
+      titulo: "Película navideña",
+      vale: { titulo: "Una peli de Navidad con palomitas", detalle: "Manta, palomitas y la película que tú elijas." }
+    },
+    7: {
+      titulo: "Navidades de antes",
+      foto: null, pie: "Mi Navidad de pequeño",
+      texto: "Hoy tienes un reto: mándame una foto tuya de pequeña en Navidad.\n\nYo ya he cumplido: aquí tienes la mía."
+    },
+    8: {
+      titulo: "Esta me recuerda a ti",
+      texto: "Cada vez que suena me acuerdo de ti. Escúchala con los ojos cerrados.",
+      enlace: { texto: "Escuchar en Spotify", url: "https://open.spotify.com/track/4dhPbGPssNpV6pSEtgTmO7" } // Heaven, Bryan Adams
+    },
+    9: {
+      titulo: "Mimos",
+      vale: { titulo: "Un masaje de 20 minutos", detalle: "Con música tranquila y sin prisas. El cronómetro es opcional." }
+    },
+    10: {
+      titulo: "Hace 13 años",
+      foto: "fotos/dia-10.jpg", apaisada: true, pie: "10-12-2013",
+      texto: "Un joven Álex de 11 años haciéndose el chulo delante de las cámaras."
+    },
+    11: {
+      titulo: "Algo que no te digo lo suficiente",
+      texto: "Gracias. Por la paciencia en los días malos, por celebrar conmigo los buenos y por hacer que lo normal se sienta especial.\n\nNo te lo digo tanto como debería, así que hoy lo dejo por escrito."
+    },
+    12: {
+      titulo: "Chef por una noche",
+      vale: { titulo: "Una cena hecha por mí", detalle: "Tú eliges el plato y yo intento que salga bien. Si sale mal, pedimos pizza y cuenta igual." }
+    },
+    13: {
+      titulo: "Un día cualquiera",
+      foto: null, pie: "De esos días que parecían normales",
+      texto: "Esta foto no es de ningún día especial, y por eso me gusta tanto. Los días normales contigo son mis favoritos."
+    },
+    14: {
+      titulo: "Mitad del camino",
+      texto: "Ya llevamos 14 puertas. Para celebrarlo, hoy toca algo un poco más grande.",
+      vale: { titulo: "Un día entero de plan sorpresa", detalle: "Reserva un día libre. Yo lo organizo todo de principio a fin y tú solo tienes que dejarte llevar." }
+    },
+    15: {
+      titulo: "Me acuerdo de…",
+      texto: "…la primera vez que me di cuenta de que me estaba enamorando. No fue en ningún momento especial, fue una tontería, y aun así lo recuerdo perfectamente.\n\nSi adivinas cuál fue, esta noche te lo cuento."
+    },
+    16: {
+      titulo: "Día libre",
+      vale: { titulo: "Te libro de una tarea de casa", detalle: "La que menos te guste: fregar, poner lavadoras, bajar la basura… Tú eliges y yo la hago." }
+    },
+    17: {
+      titulo: "Para bailar en el salón",
+      texto: "Hoy toca canción para bailar despacio, aunque sea en pijama y con calcetines.",
+      enlace: { texto: "Escuchar en Spotify", url: spotify("Thinking Out Loud Ed Sheeran") }
+    },
+    18: {
+      titulo: "Nuestra cara de felicidad",
+      foto: null, pie: "Una de mis fotos favoritas de los dos",
+      texto: "Si algún día tengo un mal día, me basta con mirar esta foto."
+    },
+    19: {
+      titulo: "Paseo de luces",
+      vale: { titulo: "Un paseo para ver las luces de Navidad", detalle: "Con chocolate caliente incluido. Tú eliges la calle y yo invito." }
+    },
+    20: {
+      titulo: "Una carta corta",
+      texto: "Escribirte esto me cuesta más de lo que parece, porque todo lo que se me ocurre se queda corto.\n\nSolo quiero que sepas que este año ha sido mejor porque estabas tú. Y que tengo muchas ganas de todos los que vienen."
+    },
+    21: {
+      titulo: "Comodín",
+      vale: { titulo: "Un sí a lo que quieras", detalle: "Una vez, sin protestar y sin preguntas. Úsalo con cabeza (o no)." }
+    },
+    22: {
+      titulo: "Casi Navidad",
+      foto: null, pie: "Otra Navidad juntos",
+      texto: "Las fiestas son mejores desde que las paso contigo. Que esta sea todavía mejor que aquella."
+    },
+    23: {
+      titulo: "La víspera",
+      texto: "Mañana es Nochebuena. Esta noche, una última canción antes del gran día.",
+      enlace: { texto: "Escuchar en Spotify", url: spotify("Feliz Navidad José Feliciano") }
+    },
+    24: {
+      titulo: "Feliz Nochebuena",
+      texto: "Has llegado al final. 24 puertas y 24 días pensando en ti un poquito más de lo normal, que ya es decir.\n\nGracias por estar, por quedarte y por hacer que todo sea más fácil. Eres el mejor regalo que tengo, y no cabes en ninguna puerta.",
+      vale: { titulo: "Un abrazo muy largo", detalle: "Canjeable ahora mismo. No caduca nunca." },
+      firma: "Te quiero"
+    }
+  };
+  const regaloDe = (n) => REGALOS[n] || {
+    titulo: `Regalo del día ${n}`,
+    texto: "Aquí aparecerá la sorpresa de este día."
+  };
+
+  // Aspecto de cada puerta: color, estampado y adorno. Los días 14 y 24 son especiales.
+  const ASPECTO = {
+    1: "verde puntos estrella",   2: "crema rayas acebo",     3: "rojo liso copo",
+    4: "granate cuadros bola",    5: "verde liso arbol",      6: "rojo puntos estrella",
+    7: "crema liso bola",         8: "verde rayas copo",      9: "rojo cuadros acebo",
+    10: "verde cuadros estrella", 11: "rojo rayas arbol",     12: "crema puntos copo",
+    13: "rojo liso estrella",     15: "verde puntos bola",    16: "rojo rayas copo",
+    17: "crema cuadros arbol",    18: "granate liso acebo",   19: "verde rayas estrella",
+    20: "crema rayas bola",       21: "rojo puntos arbol",    22: "granate puntos copo",
+    23: "verde cuadros acebo",
+    14: "plata liso copo",        24: "oro liso estrella"
+  };
+
+  const CLAVE = `adviento-${ANIO}-abiertas`;
+
+  // ================= HORA FIABLE =================
+  // Se usa la hora del servidor para que cambiar el reloj del móvil no sirva para abrir antes.
+  let desfase = 0;
+  let ahoraPrueba = null; // solo para pruebas en local: ?prueba=2026-12-05T09:00:00Z
+  try {
+    const local = location.protocol === "file:" || /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+    const p = new URLSearchParams(location.search).get("prueba");
+    if (local && p) ahoraPrueba = { base: Date.parse(p), inicio: Date.now() };
+  } catch (e) {}
+  const ahora = () => ahoraPrueba ? ahoraPrueba.base + (Date.now() - ahoraPrueba.inicio) : Date.now() + desfase;
+
+  async function leerHoraServidor(url, metodo) {
+    const t0 = Date.now();
+    const r = await fetch(url, { method: metodo, cache: "no-store" });
+    const t1 = Date.now();
+    const servidor = Date.parse(r.headers.get("Date") || "");
+    if (isNaN(servidor)) throw new Error("sin hora");
+    return servidor + 500 + (t1 - t0) / 2 - t1;
+  }
+  async function sincronizar() {
+    if (ahoraPrueba) return;
+    for (const [url, metodo] of [[location.href, "HEAD"], ["hora.txt", "GET"]]) {
+      try { desfase = await leerHoraServidor(url, metodo); break; } catch (e) {}
+    }
+    actualizar();
+  }
+
+  // ================= LÓGICA DE DÍAS =================
+  const aperturaDe = (n) => Date.UTC(ANIO, 11, n, 0, 0, 0) - DESFASE_HORAS * 3600e3;
+  const disponible = (n) => ahora() >= aperturaDe(n);
+  function leerAbiertas() {
+    try { return new Set(JSON.parse(localStorage.getItem(CLAVE) || "[]")); } catch (e) { return new Set(); }
+  }
+  function guardarAbiertas() {
+    try { localStorage.setItem(CLAVE, JSON.stringify([...abiertas])); } catch (e) {}
+  }
+  const abiertas = leerAbiertas();
+
+  // ================= DIBUJOS =================
+  const ADORNOS = {
+    estrella: '<path fill="currentColor" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7.1L12 17.3 5.8 21l1.6-7.1L2 9.2l7.1-.6z"/>',
+    copo: '<g stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7"/><path d="M9.5 3.8L12 6l2.5-2.2M9.5 20.2L12 18l2.5 2.2M4 10.6l3.2-.9-.7-3.2M20 13.4l-3.2.9.7 3.2M4 13.4l3.2.9-.7 3.2M20 10.6l-3.2-.9.7-3.2"/></g>',
+    acebo: '<g fill="currentColor"><path d="M12 13C9 9 4 9 2 11c2 .4 2 2 1 3 2-.5 3 .7 3 2 2-2 5-2 6-3z" opacity=".85"/><path d="M12 13c3-4 8-4 10-2-2 .4-2 2-1 3-2-.5-3 .7-3 2-2-2-5-2-6-3z" opacity=".85"/><circle cx="12" cy="10" r="2.2"/><circle cx="9.6" cy="8" r="2"/><circle cx="14.4" cy="8" r="2"/></g>',
+    bola: '<g fill="currentColor"><circle cx="12" cy="14" r="7.5"/><rect x="10" y="4.5" width="4" height="3" rx=".8"/><path d="M12 2.5a1.6 1.6 0 1 1 0 2" stroke="currentColor" fill="none" stroke-width="1.2"/></g><path d="M5 13c4 2 10 2 14 0" stroke="rgba(0,0,0,.25)" stroke-width="1.6" fill="none"/>',
+    arbol: '<g fill="currentColor"><path d="M12 2l5 7h-2.5l4 5.5h-3l4 5.5H4.5l4-5.5h-3l4-5.5H7z"/><rect x="10.6" y="20" width="2.8" height="2.5"/></g>'
+  };
+  const svgCandado = '<svg class="candado" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5Zm-3 8V7a3 3 0 1 1 6 0v3H9Z"/></svg>';
+  const svgRegalo = (n) => {
+    const tonos = n === 24 ? ["#e4b95e", "#b3262d"] : n === 14 ? ["#c9d7e3", "#1f3550"]
+      : [["#2f7a52", "#f6dc9c"], ["#c8343b", "#f6dc9c"], ["#e4b95e", "#b3262d"]][n % 3];
+    const [caja, cinta] = tonos;
+    return `<svg viewBox="0 0 64 64" aria-hidden="true">
+      <rect x="10" y="26" width="44" height="32" rx="3" fill="${caja}"/>
+      <rect x="6" y="18" width="52" height="11" rx="3" fill="${caja}"/>
+      <rect x="6" y="18" width="52" height="11" rx="3" fill="#000" opacity=".12"/>
+      <rect x="28" y="18" width="8" height="40" fill="${cinta}"/>
+      <path d="M32 18 C24 4, 12 8, 18 16 C20 18, 26 18, 32 18Z" fill="${cinta}"/>
+      <path d="M32 18 C40 4, 52 8, 46 16 C44 18, 38 18, 32 18Z" fill="${cinta}"/>
+    </svg>`;
+  };
+
+  // ================= GUIRNALDA =================
+  const luces = document.getElementById("luces");
+  const COLORES_LUZ = ["#ff5a5f", "#ffd166", "#5ad1a0", "#6fb7ff", "#ff9f43"];
+  const NL = 15;
+  for (let i = 0; i < NL; i++) {
+    const t = (i + .5) / NL;
+    const y = 6 + 80 * t * (1 - t); // altura del cable (curva cuadrática del SVG) en ese punto
+    const b = document.createElement("span");
+    b.className = "bombilla";
+    b.style.left = `${t * 100}%`;
+    b.style.top = `${y + 2}px`;
+    b.style.setProperty("--c", COLORES_LUZ[i % COLORES_LUZ.length]);
+    b.style.setProperty("--d", `${(i * 0.37) % 2.8}s`);
+    luces.appendChild(b);
+  }
+
+  // ================= PINTAR PUERTAS =================
+  const calendario = document.getElementById("calendario");
+  const casillas = {};
+  for (let n = 1; n <= DIAS; n++) {
+    const [color, patron, adorno] = ASPECTO[n].split(" ");
+    const b = document.createElement("button");
+    b.type = "button";
+    b.id = `puerta-${n}`;
+    b.style.gridArea = `d${n}`;
+    b.className = `casilla c-${color} p-${patron}` + (n === 14 || n === 24 ? ` especial-${n}` : "");
+    const brillos = (n === 14 || n === 24)
+      ? `<span class="brillos">${[[18,22,0],[78,18,.8],[70,78,1.6],[24,72,2.2]].map(([x,y,d]) => `<i style="left:${x}%;top:${y}%;animation-delay:${d}s"></i>`).join("")}</span>` : "";
+    b.innerHTML = `
+      <span class="interior">${svgRegalo(n)}</span>
+      <span class="puerta">${brillos}
+        <svg class="adorno" viewBox="0 0 24 24" aria-hidden="true">${ADORNOS[adorno]}</svg>
+        <span class="num">${n}</span>
+        <span class="etiqueta"></span>
+      </span>`;
+    b.addEventListener("click", () => pulsar(n));
+    calendario.appendChild(b);
+    casillas[n] = b;
+  }
+
+  function estadoDe(n) {
+    if (!disponible(n)) return "bloqueada";
+    return abiertas.has(n) ? "abierta" : "disponible";
+  }
+  function pintarCasilla(n) {
+    const b = casillas[n];
+    const est = estadoDe(n);
+    if (b.dataset.estado === est) return;
+    b.dataset.estado = est;
+    b.classList.remove("bloqueada", "disponible", "abierta");
+    b.classList.add(est);
+    const et = b.querySelector(".etiqueta");
+    if (est === "bloqueada") {
+      et.innerHTML = svgCandado;
+      b.setAttribute("aria-label", `Día ${n}, se abre el ${n} de diciembre`);
+    } else if (est === "disponible") {
+      et.textContent = "¡Ábreme!";
+      b.setAttribute("aria-label", `Día ${n}, listo para abrir`);
+    } else {
+      et.textContent = "";
+      b.setAttribute("aria-label", `Día ${n}, abierto. Ver regalo`);
+    }
+  }
+
+  function pulsar(n) {
+    const est = estadoDe(n);
+    if (est === "bloqueada" && vistaPrevia) {
+      mostrarRegalo(n); // solo para mirar: no cuenta como abierta
+      return;
+    }
+    if (est === "bloqueada") {
+      const b = casillas[n];
+      b.classList.remove("sacude"); void b.offsetWidth; b.classList.add("sacude");
+      avisar(`La puerta ${n} se abre el ${n} de diciembre a las 0:00 (faltan ${restante(aperturaDe(n) - ahora(), true)})`);
+      return;
+    }
+    if (est === "disponible") {
+      abiertas.add(n);
+      guardarAbiertas();
+      pintarCasilla(n);
+      setTimeout(() => mostrarRegalo(n), matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 800);
+      return;
+    }
+    mostrarRegalo(n);
+  }
+
+  // ================= VENTANA DEL REGALO =================
+  const velo = document.getElementById("velo");
+  let ultimoFoco = null;
+  function mostrarRegalo(n) {
+    const r = regaloDe(n);
+    document.getElementById("regaloDia").textContent = `${n} de diciembre`;
+    document.getElementById("regaloTitulo").textContent = r.titulo;
+    pintarContenido(n, r);
+    ultimoFoco = casillas[n];
+    velo.hidden = false;
+    document.getElementById("regaloCerrar").focus();
+  }
+  function crear(tag, clase, texto) {
+    const e = document.createElement(tag);
+    if (clase) e.className = clase;
+    if (texto != null) e.textContent = texto;
+    return e;
+  }
+  function pintarContenido(n, r) {
+    const c = document.getElementById("regaloContenido");
+    c.replaceChildren();
+
+    if ("foto" in r) {
+      const fig = crear("figure", "polaroid" + (r.apaisada ? " apaisada" : ""));
+      fig.style.setProperty("--giro", n % 2 ? "-2deg" : "2deg");
+      if (r.foto) {
+        const img = crear("img");
+        img.src = r.foto; img.alt = r.pie || `Foto del día ${n}`;
+        fig.append(img);
+      } else {
+        fig.append(crear("div", "hueco", "Foto pendiente de añadir"));
+      }
+      if (r.pie) fig.append(crear("figcaption", "", r.pie));
+      c.append(fig);
+    }
+
+    if (r.texto) {
+      const t = crear("div", "texto");
+      const lineas = r.texto.split("\n").filter(Boolean);
+      if (lineas.length > 1 && lineas.every((l) => /^\d+\.\s/.test(l))) {
+        const ol = crear("ol");
+        lineas.forEach((l) => ol.append(crear("li", "", l.replace(/^\d+\.\s/, ""))));
+        t.append(ol);
+      } else {
+        r.texto.split(/\n\s*\n/).forEach((p) => t.append(crear("p", "", p.trim())));
+      }
+      c.append(t);
+    }
+
+    if (r.vale) {
+      const v = crear("div", "vale");
+      v.append(crear("div", "por", "Vale por"), crear("h3", "", r.vale.titulo));
+      if (r.vale.detalle) v.append(crear("p", "", r.vale.detalle));
+      const s = crear("div", "serie");
+      s.append(crear("span", "", `Nº ${String(n).padStart(2, "0")}`), crear("span", "", "Canjeable cuando quieras"));
+      v.append(s);
+      c.append(v);
+    }
+
+    if (r.enlace) {
+      const a = crear("a", "enlace");
+      a.href = r.enlace.url; a.target = "_blank"; a.rel = "noopener";
+      a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 18V5l12-2v13a3 3 0 1 1-2-2.83V6.7l-8 1.34V18a3 3 0 1 1-2-2.83Z"/></svg>';
+      a.append(document.createTextNode(r.enlace.texto || "Abrir"));
+      c.append(a);
+    }
+
+    if (r.firma) c.append(crear("div", "firma", r.firma));
+  }
+
+  function cerrarRegalo() { velo.hidden = true; if (ultimoFoco) ultimoFoco.focus(); }
+  document.getElementById("regaloCerrar").addEventListener("click", cerrarRegalo);
+  document.getElementById("regaloX").addEventListener("click", cerrarRegalo);
+  velo.addEventListener("click", (e) => { if (e.target === velo) cerrarRegalo(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !velo.hidden) cerrarRegalo(); });
+
+  // ================= AVISO =================
+  const aviso = document.getElementById("aviso");
+  let tAviso;
+  function avisar(txt) {
+    aviso.textContent = txt;
+    aviso.classList.add("ver");
+    clearTimeout(tAviso);
+    tAviso = setTimeout(() => aviso.classList.remove("ver"), 3200);
+  }
+
+  // ================= CUENTA ATRÁS =================
+  function restante(ms, corto) {
+    ms = Math.max(0, ms);
+    const s = Math.floor(ms / 1000);
+    const d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60), seg = s % 60;
+    const pad = (x) => String(x).padStart(2, "0");
+    if (corto) {
+      if (d > 0) return `${d} ${d === 1 ? "día" : "días"} y ${h} h`;
+      if (h > 0) return `${h} h y ${m} min`;
+      return `${m} min y ${seg} s`;
+    }
+    return (d > 0 ? `${d} ${d === 1 ? "día" : "días"} · ` : "") + `${pad(h)}:${pad(m)}:${pad(seg)}`;
+  }
+  function actualizar() {
+    for (let n = 1; n <= DIAS; n++) pintarCasilla(n);
+    const t = ahora();
+    let siguiente = null;
+    for (let n = 1; n <= DIAS; n++) if (t < aperturaDe(n)) { siguiente = n; break; }
+    const txt = document.getElementById("cuentaTexto");
+    const reloj = document.getElementById("cuentaReloj");
+    if (siguiente === null) {
+      txt.textContent = "Todas las puertas están abiertas. ¡Feliz Navidad!";
+      reloj.textContent = "";
+    } else {
+      txt.textContent = siguiente === 1 ? "La primera puerta se abre en" : `La puerta ${siguiente} se abre en`;
+      reloj.textContent = restante(aperturaDe(siguiente) - t);
+    }
+  }
+
+  // ================= VISTA PREVIA (solo la dueña del calendario) =================
+  // El botón solo aparece si quien abre la página es la persona que la creó.
+  let vistaPrevia = false;
+  const previaBtn = document.getElementById("previaBtn");
+  previaBtn.addEventListener("click", () => {
+    vistaPrevia = !vistaPrevia;
+    previaBtn.setAttribute("aria-pressed", String(vistaPrevia));
+    document.getElementById("previaTxt").textContent = vistaPrevia ? "Vista previa activada" : "Vista previa";
+    document.body.classList.toggle("previa", vistaPrevia);
+    avisar(vistaPrevia
+      ? "Vista previa: puedes abrir cualquier día sin que cuente como abierto. Solo tú ves este botón."
+      : "Vista previa desactivada.");
+  });
+  // En la web propia: abrir el enlace con ?previa=<clave> marca este navegador para ver el botón.
+  // ?previa=no lo desmarca. Después se limpia la dirección para no dejar la clave a la vista.
+  const CLAVE_PREVIA = "zYsY_5RjWpHr";
+  let previaGuardada = false;
+  try {
+    const q = new URLSearchParams(location.search);
+    const p = q.get("previa");
+    if (p === CLAVE_PREVIA) localStorage.setItem("adviento-previa", "1");
+    if (p === "no") localStorage.removeItem("adviento-previa");
+    if (p !== null) { q.delete("previa"); history.replaceState(null, "", location.pathname + (q.toString() ? "?" + q : "")); }
+    previaGuardada = localStorage.getItem("adviento-previa") === "1";
+  } catch (e) {}
+
+  (async () => {
+    let dueno = !!ahoraPrueba || previaGuardada; // en pruebas locales también se muestra
+    if (dueno) { previaBtn.hidden = false; return; }
+    try {
+      const user = window.claude && window.claude.use ? await window.claude.use("user") : null;
+      if (user && await user.isOwner()) dueno = true;
+    } catch (e) {}
+    if (dueno) previaBtn.hidden = false;
+  })();
+
+  actualizar();
+  sincronizar();
+  setInterval(actualizar, 1000);
+  setInterval(sincronizar, 10 * 60 * 1000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) sincronizar(); });
+
+  // ================= NIEVE =================
+  const cv = document.getElementById("nieve");
+  const cx = cv.getContext("2d");
+  const reducir = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let copos = [], W = 0, H = 0;
+  function medir() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const cant = Math.round(Math.min(140, W * H / 9000));
+    copos = Array.from({ length: cant }, () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      r: Math.random() * 2.2 + .6, v: Math.random() * .6 + .25,
+      o: Math.random() * Math.PI * 2, a: Math.random() * .5 + .35
+    }));
+  }
+  function dibujar() {
+    cx.clearRect(0, 0, W, H);
+    cx.fillStyle = "#ffffff";
+    for (const c of copos) {
+      cx.globalAlpha = c.a;
+      cx.beginPath(); cx.arc(c.x, c.y, c.r, 0, Math.PI * 2); cx.fill();
+    }
+  }
+  function animar() {
+    for (const c of copos) {
+      c.y += c.v; c.o += .01; c.x += Math.sin(c.o) * .3;
+      if (c.y > H + 4) { c.y = -4; c.x = Math.random() * W; }
+    }
+    dibujar();
+    requestAnimationFrame(animar);
+  }
+  medir();
+  addEventListener("resize", medir);
+  if (reducir) dibujar(); else requestAnimationFrame(animar);
+})();
+</script>
+
+</body>
+</html>
