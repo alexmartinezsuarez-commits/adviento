@@ -405,6 +405,22 @@ body.previa .casilla.bloqueada { outline: 2px dashed color-mix(in srgb, var(--or
 }
 .polaroid figcaption { font-family: "Caveat", "Segoe Print", cursive; font-size: 23px; line-height: 1.2; color: #3a1a14; padding: 8px 4px 2px; }
 
+/* vídeo que desbloquea el resto del regalo */
+.polaroid.con-video video { display: block; width: 100%; height: auto; max-height: 58vh; background: #1a1210; }
+.polaroid.con-video .hueco { aspect-ratio: 9 / 16; max-height: 58vh; width: 100%; }
+.aviso-video { font-size: 13px; color: #8a6b5a; display: inline-flex; align-items: center; gap: 8px; }
+.aviso-video::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--rojo); animation: latido 1.4s ease-in-out infinite; }
+@keyframes latido { 0%, 100% { opacity: .3; transform: scale(.8); } 50% { opacity: 1; transform: scale(1.2); } }
+.revelar { display: flex; flex-direction: column; align-items: center; gap: 18px; width: 100%; }
+.revelar.aparece > * { animation: aparecePremio .8s cubic-bezier(.2,.8,.2,1.1) both; }
+.revelar.aparece > :nth-child(2) { animation-delay: .25s; }
+.revelar.aparece > :nth-child(3) { animation-delay: .5s; }
+.revelar.aparece > :nth-child(4) { animation-delay: .7s; }
+@keyframes aparecePremio { from { opacity: 0; transform: translateY(18px) scale(.94); } to { opacity: 1; transform: none; } }
+.revelar.aparece .vale { box-shadow: 0 0 0 0 rgba(228,185,94,.7); animation: aparecePremio .8s cubic-bezier(.2,.8,.2,1.1) both, brilloVale 1.6s .9s ease-out 2; }
+@keyframes brilloVale { 0% { box-shadow: 0 0 0 0 rgba(228,185,94,.75); } 100% { box-shadow: 0 0 0 18px rgba(228,185,94,0); } }
+.saltar-video { border: 0; background: none; padding: 4px 8px; font: inherit; font-size: 12px; color: #9b7a6b; text-decoration: underline; cursor: pointer; }
+
 /* carrusel de fotos y vídeos */
 .carrusel {
   margin: 4px 0 0; width: min(320px, 100%);
@@ -622,6 +638,7 @@ footer { text-align: center; font-size: 12px; color: var(--crema-tenue); }
   //   recorte: true              (para PNG sin fondo: se ve entero sobre fondo navideño)
   //   galeria: ["fotos/a.jpg", "fotos/b.mp4", { foto: "…", pie: "…" }, null]  (carrusel; null = hueco)
   //   pdf:    "fotos/archivo.pdf"   pdfTexto: "texto del botón"   (botón que abre un PDF)
+  //   videoIntro: "fotos/x.mp4"  (sale primero; el resto aparece al acabar el vídeo; null = hueco)
   //   vale:   { titulo: "…", detalle: "…" }
   //   enlace: { texto: "…", url: "https://…" }
   //   firma:  "…"               (despedida manuscrita al final)
@@ -688,7 +705,7 @@ footer { text-align: center; font-size: 12px; color: var(--crema-tenue); }
     },
     14: {
       titulo: "Feliz cumpleaños",
-      galeria: [null, null],
+      videoIntro: null,
       pdf: null, pdfTexto: "Ver mi regalo",
       texto: "Hoy no es una puerta cualquiera: aquí tienes tu regalo de cumpleaños. Prepárate para la adrenalina.",
       vale: { titulo: "Un salto de puenting", detalle: "Un salto péndulo de casi 30 metros sobre el río Tambre, desde el Ponte de Ceilán (Noia)." }
@@ -987,6 +1004,57 @@ footer { text-align: center; font-size: 12px; color: var(--crema-tenue); }
     }
 
     if (r.firma) c.append(crear("div", "firma", r.firma));
+
+    if ("videoIntro" in r) montarVideoIntro(n, r, c);
+  }
+
+  // Vídeo que va primero: el resto del regalo (texto, vale, PDF…) aparece cuando termina.
+  // Después queda todo a la vista en las siguientes visitas (se recuerda en este dispositivo).
+  function montarVideoIntro(n, r, c) {
+    const clave = `adviento-${ANIO}-visto-${n}`;
+    let visto = false;
+    try { visto = localStorage.getItem(clave) === "1"; } catch (e) {}
+
+    const fig = crear("figure", "polaroid con-video");
+    fig.style.setProperty("--giro", "0deg");
+    let v = null;
+    if (r.videoIntro) {
+      v = crear("video");
+      v.src = r.videoIntro; v.controls = true; v.playsInline = true; v.preload = "auto";
+      v.setAttribute("playsinline", "");
+      fig.append(v);
+    } else {
+      fig.append(crear("div", "hueco", "Vídeo pendiente de añadir"));
+    }
+
+    const resto = crear("div", "revelar");
+    resto.append(...c.childNodes);
+    c.append(fig, resto);
+
+    if (!v || visto) return; // sin vídeo todavía, o ya lo vio: todo a la vista
+
+    resto.hidden = true;
+    const aviso = crear("div", "aviso-video", "Tu regalo aparecerá al terminar el vídeo");
+    const saltar = crear("button", "saltar-video", "¿No se reproduce? Ver el regalo");
+    saltar.type = "button"; saltar.hidden = true;
+    c.insertBefore(aviso, resto);
+    c.insertBefore(saltar, resto);
+
+    let revelado = false;
+    function revelar() {
+      if (revelado) return;
+      revelado = true;
+      aviso.remove(); saltar.remove();
+      resto.hidden = false;
+      resto.classList.add("aparece");
+      if (!vistaPrevia) { try { localStorage.setItem(clave, "1"); } catch (e) {} }
+      setTimeout(() => resto.scrollIntoView({ behavior: "smooth", block: "center" }), 150);
+    }
+    v.addEventListener("ended", revelar);
+    v.addEventListener("error", () => { saltar.hidden = false; });
+    setTimeout(() => { if (!revelado && v.readyState < 2) saltar.hidden = false; }, 8000);
+    saltar.addEventListener("click", revelar);
+    const p = v.play(); if (p && p.catch) p.catch(() => {}); // si el móvil no deja, se pulsa ▶
   }
 
   // Carrusel: r.galeria = [ "fotos/a.jpg", { video: "fotos/b.mp4", pie: "…" }, null (hueco), … ]
