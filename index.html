@@ -621,6 +621,7 @@ footer { text-align: center; font-size: 12px; color: var(--crema-tenue); }
   //   vertical: true             (para fotos alargadas en vertical: marco 2:3)
   //   recorte: true              (para PNG sin fondo: se ve entero sobre fondo navideño)
   //   galeria: ["fotos/a.jpg", "fotos/b.mp4", { foto: "…", pie: "…" }, null]  (carrusel; null = hueco)
+  //   pdf:    "fotos/archivo.pdf"   pdfTexto: "texto del botón"   (botón que abre un PDF)
   //   vale:   { titulo: "…", detalle: "…" }
   //   enlace: { texto: "…", url: "https://…" }
   //   firma:  "…"               (despedida manuscrita al final)
@@ -687,7 +688,8 @@ footer { text-align: center; font-size: 12px; color: var(--crema-tenue); }
     },
     14: {
       titulo: "Feliz cumpleaños",
-      galeria: [null, null], pie: "Para que vayas cogiendo valor",
+      galeria: [null, null],
+      pdf: null, pdfTexto: "Ver mi regalo",
       texto: "Hoy no es una puerta cualquiera: aquí tienes tu regalo de cumpleaños. Prepárate para la adrenalina.",
       vale: { titulo: "Un salto de puenting", detalle: "Un salto péndulo de casi 30 metros sobre el río Tambre, desde el Ponte de Ceilán (Noia)." }
     },
@@ -973,6 +975,14 @@ footer { text-align: center; font-size: 12px; color: var(--crema-tenue); }
       a.href = r.enlace.url; a.target = "_blank"; a.rel = "noopener";
       a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 18V5l12-2v13a3 3 0 1 1-2-2.83V6.7l-8 1.34V18a3 3 0 1 1-2-2.83Z"/></svg>';
       a.append(document.createTextNode(r.enlace.texto || "Abrir"));
+      c.append(a);
+    }
+
+    if (r.pdf) {
+      const a = crear("a", "enlace");
+      a.href = r.pdf; a.target = "_blank"; a.rel = "noopener";
+      a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm7 1.5V9h5.5L13 3.5ZM8 13v2h8v-2H8Zm0 4v2h5v-2H8Z"/></svg>';
+      a.append(document.createTextNode(r.pdfTexto || "Abrir PDF"));
       c.append(a);
     }
 
